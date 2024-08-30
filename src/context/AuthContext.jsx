@@ -16,7 +16,7 @@ const AuthContextProvider = ({ children }) => {
                 .then((userCredential) => {
                     const user = userCredential?.user;
                     console.log(userCredential.user.uid)
-                    setDoc(doc(db, "users",userCredential?.user?.uid), {
+                    setDoc(doc(db, "users", userCredential?.user?.uid), {
                         email: userData.email,
                         firstName: userData.firstName,
                         lastName: userData.lastName,
@@ -24,7 +24,7 @@ const AuthContextProvider = ({ children }) => {
                         setUser(user);
                         setLoading(false);
                         resolve({ success: 1 });
-                    }).catch((error)=>{
+                    }).catch((error) => {
                         reject(error);
                     })
                 })
@@ -80,6 +80,11 @@ const AuthContextProvider = ({ children }) => {
                         "Firebase: Error (auth/missing-password)."
                     )
                         msg = "Please Enter The Password ";
+                    if (
+                        error.message ==
+                        "Firebase: Error (auth/user-not-found)."
+                    )
+                        msg = "User dont Exist";
                     reject(msg);
                 });
         });

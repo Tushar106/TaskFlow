@@ -32,8 +32,8 @@ function Copyright(props) {
 
 export default function SignUpScreen() {
   const navigate = useNavigate();
-  const { register, user,loading } = React.useContext(AuthContext);
-  
+  const { register, user, loading } = React.useContext(AuthContext);
+
   React.useEffect(() => {
     if (user) {
       console.log(user)
@@ -42,16 +42,16 @@ export default function SignUpScreen() {
   }, [loading])
   if (loading) {
     return <Container component={"main"} >
-        <Box sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh"
-        }}>
-            <CircularProgress />
-        </Box>
+      <Box sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh"
+      }}>
+        <CircularProgress />
+      </Box>
     </Container>;
-}
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -148,11 +148,9 @@ export default function SignUpScreen() {
           >
             Sign Up
           </Button>
-          <Grid container justifyContent="flex-end">
+          <Grid container justifyContent={"flex-end"}>
             <Grid item>
-              <Link href="/" variant="body2">
-                Already have an account? Sign in
-              </Link>
+              <Link href="/login">Already have an account? Sign in</Link>
             </Grid>
           </Grid>
         </Box>

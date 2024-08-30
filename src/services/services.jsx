@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../context/AuthContext'
-import { addDoc, collection, getDocs, orderBy, query, serverTimestamp, setDoc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, serverTimestamp, setDoc } from 'firebase/firestore'
 import { db } from '../config/firebaseConfig'
 
 export default function services() {
@@ -18,8 +18,21 @@ export default function services() {
                 title: title,
                 color: color,
                 createdAt: serverTimestamp()
-            }).then(() => {
-                console.log("fsksh")
+            }).then((d) => {
+
+                // when not using emulators
+                // const boardId = d.id;
+                // const boardRef = doc(db, `users/${user.uid}/boardsData/${boardId}`)
+                // setDoc(boardRef, {
+                //     tabs: {
+                //         todos: [],
+                //         inProgress: [],
+                //         completed: []
+                //     },
+                //     lastUpdated: serverTimestamp()
+                // }).then(() => {
+                //     resolve({ success: 1 })
+                // })
                 resolve({ success: 1 })
             }).catch((err) => {
                 reject(err)
@@ -28,14 +41,38 @@ export default function services() {
     }
     const fetchBoards = async () => {
         const colRef = collection(db, `users/${user.uid}/boards`);
-        const q=query(colRef,orderBy("createdAt","desc"))
-        const data=[]
+        const q = query(colRef, orderBy("createdAt", "desc"))
+        const data = []
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
-            data.push({...doc.data(),id:doc.id});
+            data.push({ ...doc.data(), id: doc.id });
         });
         return data
     }
-    return { createBoard, fetchBoards }
+    const fetchBoard = async (boardId) => {
+        console.log(boardId)
+        try {
+            const boardRef = doc(db, `users/${user.uid}/boardsData/${boardId}`)
+            const docSnap = await getDoc(boardRef);
+            return docSnap.data();
+        } catch (error) {
+            return new Error(error)
+        }
+
+    }
+    const deleteBoard=async(boardId)=>{
+        try {
+            const docRef = doc(db, 'users', user.uid,'boards',boardId);
+            try {
+              await deleteDoc(docRef)
+              console.log("Entire Document has been deleted successfully.");
+            } catch(ex) {
+              console.log(ex); 
+            }
+        } catch (error) {
+            return new Error(error)
+        }
+    }
+    return { createBoard, fetchBoards, fetchBoard, deleteBoard }
 }

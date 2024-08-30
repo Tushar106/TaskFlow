@@ -14,19 +14,23 @@ const StoreContextProvider = ({ children }) => {
             const data = await fetchBoards();
             setBoards(data);
             setfetchLoading(false);
+
         } catch (error) {
             console.log(error);
         }
     }
     useEffect(() => {
-        fetch();
+        if(user!=null){
+            setfetchLoading(true);
+            fetch();
+        }
     },[user])
     const refetch=async()=>{
         setfetchLoading(true);
         await fetch();
     }
     return (
-        <StoreContext.Provider value={{ boards, setBoards,fetchLoading,refetch }}>
+        <StoreContext.Provider value={{ boards, setBoards,fetchLoading,setfetchLoading,refetch }}>
             {children}
         </StoreContext.Provider>
     )

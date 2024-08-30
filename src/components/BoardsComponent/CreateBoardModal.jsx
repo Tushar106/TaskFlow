@@ -2,12 +2,15 @@ import React, { useContext, useState } from 'react'
 import { Dialog, Stack, TextField, Button, Box, Typography } from '@mui/material'
 import ModalHeader from '../ModalComponents/ModalHeader';
 import { colors } from '../../theme';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import services from '../../services/services';
 import { StoreContext } from '../../context/StoreContext';
 
 export default function CreateBoardModal({ open, setOpen }) {
-    const {  refetch } = useContext(StoreContext);
+    const { refetch } = useContext(StoreContext);
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
     const onClose = () => {
         setOpen(false);
         setTitle("");
@@ -24,7 +27,7 @@ export default function CreateBoardModal({ open, setOpen }) {
             setOpen(false);
             setTitle("");
             setSelectedColor(colors[0]);
-            const response = createBoard(title, selectedColor).then((res) => {
+            const response = createBoard(capitalizeFirstLetter(title), selectedColor).then((res) => {
                 refetch();
             });
             toast.promise(response, {

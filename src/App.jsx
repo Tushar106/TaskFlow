@@ -9,8 +9,11 @@ import PrivateRoute from './screens/PrivateRoute'
 import { AuthContext } from './context/AuthContext'
 import BoardsScreen from './screens/BoardsScreen'
 import StoreContextProvider from './context/StoreContext'
+import BoardScreen from './screens/BoardScreen'
+import PageNotFoundScreen from './screens/PageNotFoundScreen'
 export default function App() {
   const { user } = useContext(AuthContext);
+  // console.log(user)
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -19,13 +22,20 @@ export default function App() {
           <Route path='/login' element={<LoginScreen />} />
           <Route path='/signUp' element={<SignUpScreen />} />
           <Route path='/' element={
-            <StoreContextProvider>
-              <PrivateRoute>
+            <PrivateRoute>
+              <StoreContextProvider>
                 <BoardsScreen />
-              </PrivateRoute>
-            </StoreContextProvider>
-          }/>
-          {/* <Route path='/board/:id' element={}/> */}
+              </StoreContextProvider>
+            </PrivateRoute>
+          } />
+          <Route path='/board/:boardId' element={
+            <PrivateRoute>
+              <StoreContextProvider>
+                <BoardScreen />
+              </StoreContextProvider>
+            </PrivateRoute>
+          } />
+          <Route path='*' element={<PageNotFoundScreen/>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

@@ -1,12 +1,16 @@
 import { useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { Box, CircularProgress, Container } from "@mui/material";
-import Navbar from "../components/Navbar";
+import BoardsNavbar from "../components/BoardsComponent/BoardsNavbar";
 import { Toaster } from "react-hot-toast";
+import BoardNavbar from "../components/BoardComponent/BoardNavbar";
+import { StoreContext } from "../context/StoreContext";
 
 const PrivateRoute = ({ children }) => {
     const { loading, user } = useContext(AuthContext);
+    // const {fetchLoading}=useContext(StoreContext);
+    const url=useLocation();
 
     if (loading) {
         return <Container component={"main"} >
@@ -24,7 +28,7 @@ const PrivateRoute = ({ children }) => {
     if (user) {
         return (
             <>
-                <Navbar />
+                {/* {url.pathname=="/"? <BoardsNavbar/>:<BoardNavbar/>} */}
                 <Toaster/>
                 {children}
             </>

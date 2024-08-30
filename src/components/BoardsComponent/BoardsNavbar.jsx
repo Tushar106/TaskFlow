@@ -1,17 +1,18 @@
 import { Box, Button, Container, Typography } from '@mui/material'
 import React, { useContext, useState } from 'react'
-import { AuthContext } from '../context/AuthContext'
+import { AuthContext } from '../../context/AuthContext'
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useLocation } from 'react-router-dom';
-import CreateBoardModal from './BoardComponent/CreateBoardModal';
+import CreateBoardModal from './CreateBoardModal';
 
-export default function Navbar() {
+
+export default function BoardsNavbar() {
     const { logout } = useContext(AuthContext);
     let url=useLocation();
     console.log(url)
     const [open,setOpen]=useState(false);
     return (
-        <Container sx={{ background: "black", padding: "10px" , boxShadow:8 }} maxWidth={"xl"}>
+        <Container sx={{ background: "black", padding: "10px" , boxShadow:8  }} maxWidth={"xl"}>
             <Box  sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                 <Typography component="h1" fontSize={21} fontWeight={500}>
                     TaskFlow
